@@ -82,11 +82,11 @@
 		3A9CD8272588CD6800ED50C7 /* Todoey */ = {
 			isa = PBXGroup;
 			children = (
-				3A4B9172258E309400C333FA /* Models */,
 				3A9CD8282588CD6800ED50C7 /* AppDelegate.swift */,
 				3A9CD82A2588CD6800ED50C7 /* SceneDelegate.swift */,
-				3A4B9173258E30A000C333FA /* Controllers */,
+				3A4B9172258E309400C333FA /* Models */,
 				3A4B9174258E30AC00C333FA /* Views */,
+				3A4B9173258E30A000C333FA /* Controllers */,
 				3A9CD8312588CD6800ED50C7 /* Assets.xcassets */,
 				3A9CD8332588CD6800ED50C7 /* LaunchScreen.storyboard */,
 				3A9CD8362588CD6800ED50C7 /* Info.plist */,

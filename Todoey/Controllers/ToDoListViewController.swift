@@ -18,8 +18,6 @@ class ToDoListViewController: UITableViewController {
         // Do any additional setup after loading the view.
         if let todos = defaults.array(forKey: "todoListArray") {
             print(todos)
-        } else {
-            defaults.set(itemArray, forKey: "todoListArray")
         }
     }
     
@@ -32,27 +30,17 @@ class ToDoListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         cell.textLabel!.text = "\(itemArray[indexPath.row].title)"
         
-        if itemArray[indexPath.row].isDone {
-            cell.accessoryType = .checkmark
-        }
+        cell.accessoryType = itemArray[indexPath.row].isDone ?  .checkmark :  .none
+      
         return cell
     }
     
     // MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if let cell = tableView.cellForRow(at: indexPath){
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                itemArray[indexPath.row].isDone = false
-            } else {
-                cell.accessoryType = .checkmark
-                itemArray[indexPath.row].isDone = true
-            }
-            
-            cell.setSelected(false, animated: true)
-        }
+        itemArray[indexPath.row].isDone = !itemArray[indexPath.row].isDone
+        tableView.reloadData()
+        tableView.deselectRow(at: indexPath, animated: true)
         
         print(itemArray)
         
