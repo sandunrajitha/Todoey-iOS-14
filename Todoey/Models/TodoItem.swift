@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodoItem {
+struct TodoItem: Codable {
     let title: String
     var isDone: Bool
     
