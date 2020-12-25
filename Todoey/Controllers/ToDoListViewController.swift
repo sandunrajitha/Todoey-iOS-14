@@ -17,7 +17,7 @@ class ToDoListViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-//        loadData()
+        loadData()
         tableView.reloadData()
         print(itemArray)
     }
@@ -86,22 +86,14 @@ class ToDoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-//    func loadData(){
-//        let decoder = PropertyListDecoder()
-//
-//
-//        if let data = try? Data(contentsOf: dataFilePath!){
-//
-//            do {
-//                itemArray = try decoder.decode([TodoItem].self, from: data)
-//                print(itemArray)
-//                tableView.reloadData()
-//            } catch {
-//                print("error loading data \(error)")
-//            }
-//        }
-//
-//
-//    }
+    func loadData(){
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        do{
+            itemArray = try context.fetch(request)
+        } catch {
+            print("error fetching data \(error)")
+        }
+    }
     
 }
