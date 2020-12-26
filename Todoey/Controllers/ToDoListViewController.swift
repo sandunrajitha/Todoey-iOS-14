@@ -15,34 +15,37 @@ class ToDoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         loadData()
         tableView.reloadData()
-        print(itemArray)
     }
     
     // MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         cell.textLabel!.text = "\(itemArray[indexPath.row].title ?? "")"
         
         cell.accessoryType = itemArray[indexPath.row].isDone ?  .checkmark :  .none
-      
+        
         return cell
     }
     
     // MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         itemArray[indexPath.row].isDone = !itemArray[indexPath.row].isDone
+        
+        //        context.delete(itemArray[indexPath.row])
+        //        itemArray.remove(at: indexPath.row)
+        
         tableView.deselectRow(at: indexPath, animated: true)
         saveItems()
-//        print(itemArray)
+        print(itemArray)
         
     }
     
@@ -96,4 +99,24 @@ class ToDoListViewController: UITableViewController {
         }
     }
     
+}
+
+// MARK: - SearchBar Delegate methods
+
+extension ToDoListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        do{
+            itemArray = try context.fetch(request)
+        } catch {
+            print("error fetching data \(error)")
+        }
+        
+        tableView.reloadData()
+    }
 }
