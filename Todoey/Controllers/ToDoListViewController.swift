@@ -105,12 +105,26 @@ class ToDoListViewController: UITableViewController {
 extension ToDoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchData(for: searchBar.text ?? "")
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadData()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        } else {
+            searchData(for: searchBar.text!)
+        }
+    }
+    
+    func searchData(for searchText: String){
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         loadData(with: request)
     }
-    
 }
