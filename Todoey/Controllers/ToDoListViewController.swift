@@ -17,7 +17,6 @@ class ToDoListViewController: UITableViewController {
         super.viewDidLoad()
 //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         loadData()
-        tableView.reloadData()
     }
     
     // MARK: - TableView Datasource Methods
@@ -89,14 +88,14 @@ class ToDoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadData(){
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
-        request.returnsObjectsAsFaults = false
+    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()){
+
         do{
             itemArray = try context.fetch(request)
         } catch {
             print("error fetching data \(error)")
         }
+        tableView.reloadData()
     }
     
 }
@@ -111,12 +110,7 @@ extension ToDoListViewController: UISearchBarDelegate {
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        do{
-            itemArray = try context.fetch(request)
-        } catch {
-            print("error fetching data \(error)")
-        }
-        
-        tableView.reloadData()
+        loadData(with: request)
     }
+    
 }
