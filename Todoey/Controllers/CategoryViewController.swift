@@ -9,17 +9,17 @@ import UIKit
 import CoreData
 
 class CategoryViewController: UITableViewController {
-
-    var categoryArray = [Category]()
+    
+    var categoryArray: [Category] = []
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
     }
-
+    
     // MARK: - Table view data source methods
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return categoryArray.count
@@ -35,10 +35,18 @@ class CategoryViewController: UITableViewController {
     // MARK: - Table view delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        performSegue(withIdentifier: "showItems", sender: self)
+        performSegue(withIdentifier: "showItems", sender: self)
     }
-
-    // MARK: - Add new Category methods
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ToDoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow{
+            destinationVC.category = categoryArray[indexPath.row]
+        }
+    }
+    
+    // MARK: - Add new Category method
     
     @IBAction func addCategoryPressed(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)

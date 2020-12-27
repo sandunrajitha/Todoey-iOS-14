@@ -11,12 +11,18 @@ import CoreData
 class ToDoListViewController: UITableViewController {
     
     var itemArray = [Item]()
+    var category: Category? {
+        didSet {
+            loadData()
+        }
+    }
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        loadData()
+        //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+//        print(category)
+        
     }
     
     // MARK: - TableView Datasource Methods
@@ -65,6 +71,7 @@ class ToDoListViewController: UITableViewController {
                     let newTodoItem = Item(context: self.context)
                     newTodoItem.title = newitem
                     newTodoItem.isDone = false
+                    newTodoItem.parentCategory = self.category
                     
                     self.itemArray.append(newTodoItem)
                     
@@ -89,7 +96,15 @@ class ToDoListViewController: UITableViewController {
     }
     
     func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()){
-
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory == %@", category!)
+        
+        if let searchPredicate = request.predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, searchPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
         do{
             itemArray = try context.fetch(request)
         } catch {
