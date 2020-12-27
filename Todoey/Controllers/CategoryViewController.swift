@@ -22,15 +22,45 @@ class CategoryViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return categoryArray.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
+        cell.textLabel!.text = categoryArray[indexPath.row].name
+        
+        return cell
+    }
+    
+    // MARK: - Table view delegate methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //        performSegue(withIdentifier: "showItems", sender: self)
     }
 
+    // MARK: - Add new Category methods
     
     @IBAction func addCategoryPressed(_ sender: UIBarButtonItem) {
-//        performSegue(withIdentifier: "showItems", sender: self)
+        let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
+        
+        alert.addTextField { (categoryTextField) in
+            categoryTextField.placeholder = "Enter New Category"
+        }
+        alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (UIAlertAction) in
+            if let newCategory = alert.textFields?[0].text{
+                if newCategory != ""{
+                    let category = Category(context: self.context)
+                    category.name = newCategory
+                    
+                    self.categoryArray.append(category)
+                    self.saveCategory()
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
-    
-    // MARK: - Add new Category methods
     
     // MARK: - Data manipulation methods
     
