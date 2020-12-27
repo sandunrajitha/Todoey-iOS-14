@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryViewController: UITableViewController {
 
+    var categoryArray = [Category]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        loadData()
     }
 
     // MARK: - Table view data source methods
@@ -23,6 +27,28 @@ class CategoryViewController: UITableViewController {
 
     
     @IBAction func addCategoryPressed(_ sender: UIBarButtonItem) {
+//        performSegue(withIdentifier: "showItems", sender: self)
     }
+    
+    // MARK: - Add new Category methods
+    
+    // MARK: - Data manipulation methods
+    
+    func saveCategory() {
+    
+    }
+    
+    func loadData() {
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        
+        do{
+            categoryArray = try context.fetch(request)
+        } catch {
+            print("error fetching category \(error)")
+        }
+        
+    }
+    
+    
     
 }
