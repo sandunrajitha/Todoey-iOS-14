@@ -10,7 +10,7 @@ import RealmSwift
 
 class CategoryViewController: UITableViewController {
     
-    var categoryArray: [Category] = []
+    var categories: Results<Category>!
     let realm = try! Realm()
     
     override func viewDidLoad() {
@@ -22,12 +22,12 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return categoryArray.count
+        return categories.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        cell.textLabel!.text = categoryArray[indexPath.row].name
+        cell.textLabel!.text = categories[indexPath.row].name
         
         return cell
     }
@@ -42,7 +42,7 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! ToDoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow{
-            destinationVC.category = categoryArray[indexPath.row]
+            destinationVC.category = categories[indexPath.row]
         }
     }
     
@@ -60,7 +60,6 @@ class CategoryViewController: UITableViewController {
                     let category = Category()
                     category.name = newCategory
                     
-                    self.categoryArray.append(category)
                     self.save(category: category)
                 }
             }
@@ -84,14 +83,16 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadData() {
-//        let request: NSFetchRequest<Category> = Category.fetchRequest()
         
-        do {
+        categories = realm.objects(Category.self)
+        
+//        let request: NSFetchRequest<Category> = Category.fetchRequest()
+//        do {
 //            categoryArray = try context.fetch(request)
-        } catch {
-            print("error fetching category \(error)")
-        }
-        tableView.reloadData()
+//        } catch {
+//            print("error fetching category \(error)")
+//        }
+//        tableView.reloadData()
     }
     
     
