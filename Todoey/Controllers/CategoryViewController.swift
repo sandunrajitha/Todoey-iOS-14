@@ -10,7 +10,7 @@ import RealmSwift
 
 class CategoryViewController: UITableViewController {
     
-    var categories: Results<Category>!
+    var categories: Results<Category>?
     let realm = try! Realm()
     
     override func viewDidLoad() {
@@ -22,12 +22,12 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return categories.count
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        cell.textLabel!.text = categories[indexPath.row].name
+        cell.textLabel!.text = categories?[indexPath.row].name
         
         return cell
     }
