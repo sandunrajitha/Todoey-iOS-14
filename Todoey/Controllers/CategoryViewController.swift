@@ -27,7 +27,8 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        cell.textLabel!.text = categories?[indexPath.row].name
+        
+        cell.textLabel!.text = categories?[indexPath.row].name ?? "No Categories added yet"
         
         return cell
     }
@@ -42,7 +43,7 @@ class CategoryViewController: UITableViewController {
         let destinationVC = segue.destination as! ToDoListViewController
         
         if let indexPath = tableView.indexPathForSelectedRow{
-            destinationVC.category = categories[indexPath.row]
+            destinationVC.category = categories?[indexPath.row]
         }
     }
     
