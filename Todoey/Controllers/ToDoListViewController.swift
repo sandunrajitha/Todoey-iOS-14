@@ -46,14 +46,18 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //        items?[indexPath.row].isDone = !items?[indexPath.row].isDone
-        
-        //        context.delete(itemArray[indexPath.row])
-        //        itemArray.remove(at: indexPath.row)
+        if let item = items?[indexPath.row]{
+            do {
+                try realm.write{
+                    item.isDone = !item.isDone
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("error marking as done \(error)")
+            }
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
-        //        saveItems()
-        print(items)
         
     }
     
@@ -108,29 +112,29 @@ class ToDoListViewController: UITableViewController {
 
 // MARK: - SearchBar Delegate methods
 
-extension ToDoListViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchData(for: searchBar.text ?? "")
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text?.count == 0 {
-            //            loadData()
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
-        } else {
-            searchData(for: searchBar.text!)
-        }
-    }
-    
-    func searchData(for searchText: String){
-        //        let request: NSFetchRequest<Item> = Item.fetchRequest()
-        //
-        //        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
-        //        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        //
-        //        loadData(with: request)
-    }
-}
+//extension ToDoListViewController: UISearchBarDelegate {
+//
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        searchData(for: searchBar.text ?? "")
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchBar.text?.count == 0 {
+//            //            loadData()
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
+//        } else {
+//            searchData(for: searchBar.text!)
+//        }
+//    }
+//
+//    func searchData(for searchText: String){
+//        //        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//        //
+//        //        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
+//        //        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//        //
+//        //        loadData(with: request)
+//    }
+//}
