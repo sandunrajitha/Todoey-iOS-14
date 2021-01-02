@@ -14,7 +14,6 @@ class ToDoListViewController: UITableViewController {
     var category: Category? {
         didSet {
             loadData()
-            print(category?.name)
         }
     }
     let realm = try! Realm()
@@ -49,6 +48,8 @@ class ToDoListViewController: UITableViewController {
         if let item = items?[indexPath.row]{
             do {
                 try realm.write{
+                    
+//                    realm.delete(item)
                     item.isDone = !item.isDone
                     self.tableView.reloadData()
                 }
@@ -112,29 +113,27 @@ class ToDoListViewController: UITableViewController {
 
 // MARK: - SearchBar Delegate methods
 
-//extension ToDoListViewController: UISearchBarDelegate {
-//
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        searchData(for: searchBar.text ?? "")
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//            //            loadData()
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//        } else {
-//            searchData(for: searchBar.text!)
-//        }
-//    }
-//
-//    func searchData(for searchText: String){
-//        //        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//        //
-//        //        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText)
-//        //        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//        //
-//        //        loadData(with: request)
-//    }
-//}
+extension ToDoListViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchData(for: searchBar.text ?? "")
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            
+            loadData()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        } else {
+            searchData(for: searchBar.text!)
+        }
+    }
+
+    func searchData(for searchText: String){
+        
+        items = items?.filter("title CONTAINS[cd] %@", searchText).sorted(byKeyPath: "title", ascending: true)
+        self.tableView.reloadData()
+    }
+}
