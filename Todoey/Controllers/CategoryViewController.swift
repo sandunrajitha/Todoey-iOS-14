@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoryViewController: UITableViewController {
     
@@ -26,9 +27,9 @@ class CategoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! SwipeTableViewCell
         cell.textLabel!.text = categories?[indexPath.row].name ?? "No Categories added yet"
+        cell.delegate = self
         
         return cell
     }
@@ -84,18 +85,25 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadData() {
-        
         categories = realm.objects(Category.self)
-        
-//        let request: NSFetchRequest<Category> = Category.fetchRequest()
-//        do {
-//            categoryArray = try context.fetch(request)
-//        } catch {
-//            print("error fetching category \(error)")
-//        }
-//        tableView.reloadData()
     }
-    
+}
+
+// MARK: - SwipeTableViewCell Delegate Methods
+
+extension CategoryViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            print("delete at \(indexPath.row)")
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        return [deleteAction]
+    }
     
     
 }
