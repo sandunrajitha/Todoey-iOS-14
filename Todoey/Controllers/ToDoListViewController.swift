@@ -73,13 +73,14 @@ class ToDoListViewController: UITableViewController {
         
         alert.addAction(UIAlertAction(title: "Add Item", style: .default, handler: { (alertAction) in
             
-            if let newitem = alert.textFields?[0].text{
-                if newitem != ""{
+            if let newitemTitle = alert.textFields?[0].text{
+                if newitemTitle != ""{
                     
                     if self.category != nil {
                         
                         let newTodoItem = Item()
-                        newTodoItem.title = newitem
+                        newTodoItem.title = newitemTitle
+                        newTodoItem.dateCreated = Date()
                         
                         do {
                             try self.realm.write{
@@ -104,7 +105,7 @@ class ToDoListViewController: UITableViewController {
     
     func loadData(){
         
-        items = category?.items.sorted(byKeyPath: "title", ascending: true)
+        items = category?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
     }
@@ -133,7 +134,7 @@ extension ToDoListViewController: UISearchBarDelegate {
 
     func searchData(for searchText: String){
         
-        items = items?.filter("title CONTAINS[cd] %@", searchText).sorted(byKeyPath: "title", ascending: true)
+        items = items?.filter("title CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: true)
         self.tableView.reloadData()
     }
 }
