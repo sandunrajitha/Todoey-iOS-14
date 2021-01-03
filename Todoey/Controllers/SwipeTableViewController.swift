@@ -8,6 +8,7 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
+import ChameleonFramework
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
@@ -21,6 +22,8 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SwipeTableViewCell
         cell.delegate = self
+        cell.backgroundColor = RandomFlatColor()
+        tableView.separatorStyle = .none
         return cell
     }
     

@@ -10,7 +10,7 @@ import RealmSwift
 
 class Category: Object {
     @objc dynamic var name: String = ""
-    
+    @objc dynamic var cellColour: String = ""
     //forward relationship - Category has Items
     var items = List<Item>()
 }
