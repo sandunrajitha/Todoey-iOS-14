@@ -102,6 +102,21 @@ class ToDoListViewController: SwipeTableViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // MARK: - Delete data from swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        
+        if let item = self.items?[indexPath.row]{
+            do {
+                try self.realm.write{
+                    self.realm.delete(item)
+                }
+            } catch {
+                print("error deleting category \(error)")
+            }
+        }
+    }
+    
     
     func loadData(){
         
