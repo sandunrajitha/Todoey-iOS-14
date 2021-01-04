@@ -28,26 +28,28 @@ class ToDoListViewController: SwipeTableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-//        self.navigationItem.title = category?.name
+        //        self.navigationItem.title = category?.name
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller not found")}
         
         if let colorHex = category?.cellColour {
             title = category?.name
             
-//            tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.titleTextAttributes = [.foregroundColor: ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)]
             navBarAppearance.backgroundColor = UIColor(hexString: colorHex)
-
+            
             navBar.standardAppearance = navBarAppearance
             navBar.scrollEdgeAppearance = navBarAppearance
             navBar.tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
             
-            //            searchBar.barTintColor = UIColor(hexString: colorHex)
+            searchBar.barTintColor = UIColor(hexString: colorHex)
             searchBar.isTranslucent = true
-            //            searchBar.tintColor = .white
+            searchBar.searchTextField.backgroundColor = .white
+            searchBar.tintColor = UIColor(hexString: colorHex)
+            searchBar.searchTextField.textColor = UIColor(hexString: colorHex)
+            searchBar.searchTextField.leftView?.tintColor = UIColor(hexString: colorHex)
         }
         
     }
@@ -84,7 +86,7 @@ class ToDoListViewController: SwipeTableViewController {
             do {
                 try realm.write{
                     
-//                    realm.delete(item)
+                    //                    realm.delete(item)
                     item.isDone = !item.isDone
                     self.tableView.reloadData()
                 }
@@ -165,11 +167,11 @@ class ToDoListViewController: SwipeTableViewController {
 // MARK: - SearchBar Delegate methods
 
 extension ToDoListViewController: UISearchBarDelegate {
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchData(for: searchBar.text ?? "")
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             
@@ -181,7 +183,7 @@ extension ToDoListViewController: UISearchBarDelegate {
             searchData(for: searchBar.text!)
         }
     }
-
+    
     func searchData(for searchText: String){
         
         items = items?.filter("title CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: true)

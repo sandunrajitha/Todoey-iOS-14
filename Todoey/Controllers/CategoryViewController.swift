@@ -14,6 +14,10 @@ class CategoryViewController: SwipeTableViewController {
     var categories: Results<Category>?
     let realm = try! Realm()
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            UIStatusBarStyleContrast
+        }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
@@ -21,7 +25,6 @@ class CategoryViewController: SwipeTableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller not found")}
-        
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -58,6 +61,8 @@ class CategoryViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "showItems", sender: self)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

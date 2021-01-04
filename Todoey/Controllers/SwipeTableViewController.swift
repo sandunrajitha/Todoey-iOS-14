@@ -12,12 +12,14 @@ import ChameleonFramework
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+            .lightContent
+        }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 75
-        
-//        self.navigationController?.navigationBar.barTintColor = .red
-
+        view.backgroundColor = .white
     }
 
     // MARK: - TableView Datasource Methods
