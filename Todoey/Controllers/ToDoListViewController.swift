@@ -19,8 +19,37 @@ class ToDoListViewController: SwipeTableViewController {
     }
     let realm = try! Realm()
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+//        self.navigationItem.title = category?.name
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller not found")}
+        
+        if let colorHex = category?.cellColour {
+            title = category?.name
+            
+//            tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = UIColor(hexString: colorHex)
+
+            navBar.standardAppearance = navBarAppearance
+            navBar.scrollEdgeAppearance = navBarAppearance
+            navBar.tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
+            
+            //            searchBar.barTintColor = UIColor(hexString: colorHex)
+            searchBar.isTranslucent = true
+            //            searchBar.tintColor = .white
+        }
+        
     }
     
     // MARK: - TableView Datasource Methods
@@ -39,7 +68,10 @@ class ToDoListViewController: SwipeTableViewController {
             cell.textLabel!.text = "No Items added yet"
         }
         
-        cell.backgroundColor = UIColor(hexString: category?.cellColour ?? "FFFFFF")?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(items!.count))
+        if let colour  = UIColor(hexString: category!.cellColour)?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(items!.count)){
+            cell.backgroundColor = colour
+            cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+        }
         
         return cell
     }
