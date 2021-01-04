@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class ToDoListViewController: SwipeTableViewController {
     
@@ -37,6 +38,8 @@ class ToDoListViewController: SwipeTableViewController {
         } else {
             cell.textLabel!.text = "No Items added yet"
         }
+        
+        cell.backgroundColor = UIColor(hexString: category?.cellColour ?? "FFFFFF")?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(items!.count))
         
         return cell
     }

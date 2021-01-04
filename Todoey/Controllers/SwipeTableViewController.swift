@@ -22,7 +22,6 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SwipeTableViewCell
         cell.delegate = self
-        cell.backgroundColor = RandomFlatColor()
         tableView.separatorStyle = .none
         return cell
     }
@@ -31,10 +30,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            print("delete at \(indexPath.row)")
-            
             self.updateModel(at: indexPath)
-
         }
         
         // customize the action appearance
