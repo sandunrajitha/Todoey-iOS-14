@@ -21,10 +21,16 @@ class ToDoListViewController: SwipeTableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNeedsStatusBarAppearanceUpdate()
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -43,6 +49,7 @@ class ToDoListViewController: SwipeTableViewController {
             navBar.standardAppearance = navBarAppearance
             navBar.scrollEdgeAppearance = navBarAppearance
             navBar.tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
+            navBar.barStyle = .default
             
             searchBar.barTintColor = UIColor(hexString: colorHex)
             searchBar.isTranslucent = true
@@ -72,6 +79,7 @@ class ToDoListViewController: SwipeTableViewController {
         
         if let colour  = UIColor(hexString: category!.cellColour)?.darken(byPercentage: CGFloat(indexPath.row)/CGFloat(items!.count)){
             cell.backgroundColor = colour
+            cell.tintColor = ContrastColorOf(colour, returnFlat: true)
             cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
         }
         
