@@ -26,6 +26,6 @@ Finally Using Realm Database as an alternative to CoreData because of it's simpl
 1. Clone the project
 2. Install [cocoapods](https://guides.cocoapods.org/using/getting-started.html)
 3. Run ``` pod install ``` in the same directory as the ```Podfile```
-4. Run the ```Flash Chat iOS14.xcworkspace```
+4. Run the ```Todoey.xcworkspace```
 
 >This is a companion project to The App Brewery's Complete App Developement Bootcamp.
