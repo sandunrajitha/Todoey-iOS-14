@@ -22,7 +22,8 @@ Finally Using Realm Database as an alternative to CoreData because of it's simpl
 1. Clone the project
 2. Install [cocoapods](https://guides.cocoapods.org/using/getting-started.html)
 3. Run ``` pod install ``` in the same directory as the ```Podfile```
-4. Run the ```Todoey.xcworkspace```
+4. Open the ```Todoey.xcworkspace```
+5. Build & Run
 
 
 ## Screens
