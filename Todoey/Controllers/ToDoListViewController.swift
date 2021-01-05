@@ -49,7 +49,8 @@ class ToDoListViewController: SwipeTableViewController {
             navBar.standardAppearance = navBarAppearance
             navBar.scrollEdgeAppearance = navBarAppearance
             navBar.tintColor = ContrastColorOf(UIColor(hexString: colorHex)!, returnFlat: true)
-            navBar.barStyle = .default
+//            navBar.barStyle = .default
+            navBar.barStyle = .black
             
             searchBar.barTintColor = UIColor(hexString: colorHex)
             searchBar.isTranslucent = true
@@ -130,12 +131,11 @@ class ToDoListViewController: SwipeTableViewController {
                         do {
                             try self.realm.write{
                                 self.category?.items.append(newTodoItem)
+                                self.tableView.reloadData()
                             }
                         } catch {
                             print("error saving item \(error)")
                         }
-                        
-                        
                         self.tableView.reloadData()
                     }
                 }
