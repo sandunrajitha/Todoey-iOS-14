@@ -28,7 +28,7 @@ Finally Using Realm Database as an alternative to CoreData because of it's simpl
 ## Screens
 
 <img src="documentation/screenstransparent.png">
-<br><br>
+<br>
 
 Add Categories | Add Items
 ------------ | -------------
